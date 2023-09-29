@@ -72,10 +72,24 @@ class LinksController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        try {
+            $id = (int)$id;
+
+            $link = Link::findOrFail($id);
+
+           return response()->json([
+               'message'=>'Link retrieved successfully',
+               'link'=>$link
+           ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Handle the case where the link is not found, for example, redirect or show an error page
+            abort(404, 'Link not found');
+        }
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -90,7 +104,18 @@ class LinksController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $link=Link::findOrFail($id);
+        if(!$link){
+            abort(404, 'Link not found');
+        }else{
+            $link->name=$request->name;
+            $link->original=$request->original;
+            $link->save();
+            return response()->json([
+                'message'=>'link updated successfully',
+                'link'=>$link
+            ]);
+        }
     }
 
 
