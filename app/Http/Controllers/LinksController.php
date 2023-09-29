@@ -48,7 +48,7 @@ class LinksController extends Controller
             // Return the validation error response to the client
             return response()->json([
                 'message' => 'Validation failed',
-                'errors' => $e->errors(jkjk),
+                'errors' => $e->errors(),
             ], 422); // 422 indicates Unprocessable Entity (validation failed)
 
             // You can also use $e->getMessage() to get the error message if you prefer.
